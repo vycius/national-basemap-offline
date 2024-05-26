@@ -43,7 +43,7 @@ class OfflineMapDataReader {
   }
 
   Future<SpriteStyle> _getSprites() async {
-    var spriteJsonString = await rootBundle.loadString(_assetSpriteJson);
+    final spriteJsonString = await rootBundle.loadString(_assetSpriteJson);
     final spriteIndex = SpriteIndexReader().read(jsonDecode(spriteJsonString));
 
     return SpriteStyle(
@@ -56,7 +56,7 @@ class OfflineMapDataReader {
   }
 
   Future<Theme> _getTheme() async {
-    var themeJsonString = await rootBundle.loadString(_assetStyle);
+    final themeJsonString = await rootBundle.loadString(_assetStyle);
 
     return ThemeReader().read(jsonDecode(themeJsonString));
   }
@@ -74,8 +74,8 @@ class OfflineMapDataReader {
     String assetPath,
     Directory directory,
   ) async {
-    var bytes = await rootBundle.load(assetPath);
-    var file = File(p.join(directory.path, assetPath));
+    final bytes = await rootBundle.load(assetPath);
+    final file = File(p.join(directory.path, assetPath));
 
     await file.create(recursive: true);
     return file.writeAsBytes(bytes.buffer.asUint8List(), flush: true);
