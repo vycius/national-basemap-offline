@@ -61,8 +61,8 @@ class OfflineMap extends StatelessWidget {
         VectorTileLayer(
           // the map theme
           theme: data.theme,
+          sprites: data.sprites,
           layerMode: VectorTileLayerMode.vector,
-
           tileProviders: TileProviders({
             'openmaptiles': data.pmTilesProvider,
           }),

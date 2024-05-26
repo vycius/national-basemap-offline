@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_geojson/flutter_map_geojson.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:vector_map_tiles/vector_map_tiles.dart';
 import 'package:vector_map_tiles_pmtiles/vector_map_tiles_pmtiles.dart';
 import 'package:path/path.dart' as p;
 import 'package:vilnius100km/constants.dart';
@@ -13,6 +14,8 @@ import 'package:vector_tile_renderer/vector_tile_renderer.dart';
 class OfflineMapDataReader {
   static const _assetPMTiles = 'assets/pmtiles/vilnius.pmtiles';
   static const _assetStyle = 'assets/styles/bright/style.json';
+  static const _assetSpriteJson = 'assets/styles/bright/sprites/bright.json';
+  static const _assetSpriteImage = 'assets/styles/bright/sprites/bright.png';
   static const _assetTracksGeoJson = 'assets/geojson/tracks.geojson';
 
   Future<OfflineMapData> read() async {
@@ -20,11 +23,13 @@ class OfflineMapDataReader {
 
     final trackPolylines = await _getTrackPolylines();
     final theme = await _getTheme();
+    final sprites = await _getSprites();
     final pmTilesProvider = await _getPmTilesVectorTileProvider(directory);
 
     return OfflineMapData(
       pmTilesProvider: pmTilesProvider,
       theme: theme,
+      sprites: sprites,
       trackPolylines: trackPolylines,
     );
   }
@@ -35,6 +40,19 @@ class OfflineMapDataReader {
     final file = await _copyAssetToFile(_assetPMTiles, directory);
 
     return PmTilesVectorTileProvider.fromSource(file.path);
+  }
+
+  Future<SpriteStyle> _getSprites() async {
+    var spriteJsonString = await rootBundle.loadString(_assetSpriteJson);
+    final spriteIndex = SpriteIndexReader().read(jsonDecode(spriteJsonString));
+
+    return SpriteStyle(
+      index: spriteIndex,
+      atlasProvider: () async {
+        final bytes = await rootBundle.load(_assetSpriteImage);
+        return bytes.buffer.asUint8List();
+      },
+    );
   }
 
   Future<Theme> _getTheme() async {
@@ -66,11 +84,13 @@ class OfflineMapDataReader {
 
 class OfflineMapData {
   final Theme theme;
+  final SpriteStyle sprites;
   final PmTilesVectorTileProvider pmTilesProvider;
   final List<Polyline> trackPolylines;
 
-  OfflineMapData({
+  const OfflineMapData({
     required this.theme,
+    required this.sprites,
     required this.pmTilesProvider,
     required this.trackPolylines,
   });
