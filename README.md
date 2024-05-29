@@ -1,16 +1,17 @@
-# vilnius100km
+# Offline Demo of the National Basemap
 
-vilnius100km description
+This project provides an offline demo of the National Basemap, showcasing an offline basemap of
+Vilnius city and an area extending 100 km around the Vilnius track. The demo is implemented using
+the `flutter_map` library. This example serves as a guide for implementing similar functionality in
+other libraries such as OpenLayers and Maplibre.
 
-## Getting Started
+## Key Components
 
-This project is a starting point for a Flutter application.
+The most important parts of the code can be found in the `lib` directory, including:
 
-A few resources to get you started if this is your first Flutter project:
+- [`offline_map_data_reader.dart`](https://github.com/vycius/national-basemap-offline/blob/main/lib/offline/offline_map_data_reader.dart#L29)
+- [`trail_map_screen.dart`](https://github.com/vycius/national-basemap-offline/blob/main/lib/trail_map_screen.dart#L61)
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## Application
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+![Vilnius 100km mobile application for offline usage](https://github.com/vycius/national-basemap-offline/assets/3719141/2d3ca6e3-9c5b-4b54-bf28-720c5bb228f7)
